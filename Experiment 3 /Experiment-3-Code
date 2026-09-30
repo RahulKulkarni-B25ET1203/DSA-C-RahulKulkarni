@@ -1,0 +1,231 @@
+#include<stdio.h>
+void bubble(int a[], int n) {
+    int i, j, temp;
+
+    for(i = 0; i < n - 1; i++) {
+        for(j = 0; j < n - i - 1; j++) {
+            if(a[j] > a[j+1]) {
+                temp = a[j];
+                a[j] = a[j+1];
+                a[j+1] = temp;
+            }
+        }
+    }
+
+    printf("\nThe sorted array is : ");
+    for(i = 0; i < n; i++) {
+        printf("\t%d", a[i]);
+    }
+}
+
+
+void insert(int a[], int n) {
+    int i, j, temp;
+
+    for(i = 1; i < n; i++) {
+        temp = a[i];
+        j = i - 1;
+
+        while(j >= 0 && a[j] > temp) {
+            a[j+1] = a[j];
+            j = j - 1;
+        }
+
+        a[j+1] = temp;
+    }
+
+    printf("\nThe sorted array is : ");
+    for(i = 0; i < n; i++) {
+        printf("\t%d", a[i]);
+    }
+}
+
+
+void selection(int a[], int n) {
+    int i, j, min, temp;
+
+    for(i = 0; i < n - 1; i++) {
+        min = i;
+
+        for(j = i + 1; j < n; j++) {
+            if(a[j] < a[min])
+                min = j;
+        }
+
+        temp = a[i];
+        a[i] = a[min];
+        a[min] = temp;
+    }
+
+    printf("\nThe sorted array is : ");
+    for(i = 0; i < n; i++) {
+        printf("\t%d", a[i]);
+    }
+}
+
+void merge(int a[], int low, int mid, int high) {
+    int i, j, k;
+    int b[100];
+
+    i = low;
+    j = mid + 1;
+    k = low;
+
+    while(i <= mid && j <= high) {
+        if(a[i] < a[j]) {
+            b[k] = a[i];
+            i++;
+        }
+        else {
+            b[k] = a[j];
+            j++;
+        }
+        k++;
+    }
+
+    while(i <= mid) {
+        b[k] = a[i];
+        i++;
+        k++;
+    }
+
+    while(j <= high) {
+        b[k] = a[j];
+        j++;
+        k++;
+    }
+
+    for(i = low; i <= high; i++) {
+        a[i] = b[i];
+    }
+}
+
+void mergeSort(int a[], int low, int high) {
+    int mid;
+
+    if(low < high) {
+        mid = (low + high) / 2;
+
+        mergeSort(a, low, mid);
+        mergeSort(a, mid + 1, high);
+
+        merge(a, low, mid, high);
+    }
+}
+
+int partition(int a[], int low, int high) {
+    int pivot, i, j, temp;
+
+    pivot = a[low];
+    i = low + 1;
+    j = high;
+
+    while(i <= j) {
+
+        while(i <= high && a[i] <= pivot)
+            i++;
+
+        while(a[j] > pivot)
+            j--;
+
+        if(i < j) {
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+        }
+    }
+
+    temp = a[low];
+    a[low] = a[j];
+    a[j] = temp;
+
+    return j;
+}
+
+void quickSort(int a[], int low, int high) {
+    int p;
+
+    if(low < high) {
+        p = partition(a, low, high);
+
+        quickSort(a, low, p - 1);
+        quickSort(a, p + 1, high);
+    }
+}
+
+
+int main() {
+    int i;
+    int choice;
+    int n;
+
+    printf("\nEnter the size of array: ");
+    scanf("%d", &n);
+
+    int a[n];
+
+    printf("\nEnter the %d elements : ", n);
+
+    for(i = 0; i < n; i++) {
+        printf("\nEnter element %d: ", i + 1);
+        scanf("%d", &a[i]);
+    }
+
+    printf("\n\n===Methods Available to Sort===");
+
+    printf("\n1. Bubble Sort");
+    printf("\n2. Insertion Sort");
+    printf("\n3. Selection Sort");
+    printf("\n4. Merge Sort");
+    printf("\n5. Quick Sort");
+    printf("\n6. Exit");
+
+    do {
+    printf("\n\nEnter your choice: ");
+    scanf("%d", &choice);
+
+    switch(choice) {
+
+    case 1:
+    bubble(a, n);
+    break;
+
+    case 2:
+    insert(a, n);
+    break;
+
+    case 3:
+    selection(a, n);
+    break;
+
+    case 4:
+    mergeSort(a, 0, n - 1);
+
+    printf("\nThe sorted array is : ");
+    for(i = 0; i < n; i++) {
+    printf("\t%d", a[i]);
+    }
+    break;
+
+    case 5:
+    quickSort(a, 0, n - 1);
+
+    printf("\nThe sorted array is : ");
+    for(i = 0; i < n; i++) {
+    printf("\t%d", a[i]);
+    }
+    break;
+
+    case 6:
+    printf("\nExiting Program....\n");
+    break;
+
+    default:
+    printf("\nEnter a valid choice.");
+    break;
+    }
+
+    } while(choice != 6);
+
+    return 0;
+}
