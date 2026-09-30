@@ -1,0 +1,122 @@
+#include <stdio.h>
+#define SIZE 5
+struct Queue {
+    int que[SIZE];
+    int front, rear;
+} Q;
+
+int Qfull()
+{
+    if (Q.rear >= SIZE - 1)
+        return 1;
+    else
+        return 0;
+}
+
+int Qempty()
+{
+    if (Q.front == -1 || Q.front > Q.rear)
+        return 1;
+    else
+        return 0;
+}
+
+void insert(int item)
+{
+    if (Q.front == -1)
+        Q.front = 0;
+
+    Q.rear++;
+    Q.que[Q.rear] = item;
+}
+
+int dequeue()
+{
+    int item;
+
+    item = Q.que[Q.front];
+    Q.front++;
+
+    printf("\nDeleted item is %d", item);
+
+    return item;
+}
+
+void display()
+{
+    int i;
+
+    printf("\nThe elements are:\n");
+
+    for (i = Q.front; i <= Q.rear; i++)
+    {
+        printf("%d ", Q.que[i]);
+    }
+}
+
+int main()
+{
+    int choice, item;
+    char ans;
+
+    Q.front = -1;
+    Q.rear = -1;
+
+    do
+    {
+        printf("\n\nMain Menu");
+        printf("\n1. Insert");
+        printf("\n2. Delete");
+        printf("\n3. Display");
+
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                if (Qfull())
+                {
+                    printf("\nQueue is full");
+                }
+                else
+                {
+                    printf("\nEnter the element to insert: ");
+                    scanf("%d", &item);
+                    insert(item);
+                }
+                break;
+
+            case 2:
+                if (Qempty())
+                {
+                    printf("\nQueue is empty");
+                }
+                else
+                {
+                    dequeue();
+                }
+                break;
+
+            case 3:
+                if (Qempty())
+                {
+                    printf("\nQueue is empty");
+                }
+                else
+                {
+                    display();
+                }
+                break;
+
+            default:
+                printf("\nInvalid choice");
+        }
+
+        printf("\n\nDo you want to continue? (y/n): ");
+        scanf(" %c", &ans);
+
+    } while (ans == 'y' || ans == 'Y');
+
+    return 0;
+}
